@@ -1,8 +1,11 @@
 package com.infrolog.elu.android;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -10,28 +13,34 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 public class Sudoku extends Activity implements OnClickListener {
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-     // Set up click listeners for all the buttons
-        View continueButton = findViewById(R.id.continue_button);
-        continueButton.setOnClickListener(this);
-        View newButton = findViewById(R.id.new_button);
-        newButton.setOnClickListener(this);
-        View aboutButton = findViewById(R.id.about_button);
-        aboutButton.setOnClickListener(this);
-        View exitButton = findViewById(R.id.exit_button);
-        exitButton.setOnClickListener(this);
-    }
+
+	private static final String TAG = "Sudoku";
+
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		// Set up click listeners for all the buttons
+		View continueButton = findViewById(R.id.continue_button);
+		continueButton.setOnClickListener(this);
+		View newButton = findViewById(R.id.new_button);
+		newButton.setOnClickListener(this);
+		View aboutButton = findViewById(R.id.about_button);
+		aboutButton.setOnClickListener(this);
+		View exitButton = findViewById(R.id.exit_button);
+		exitButton.setOnClickListener(this);
+	}
 
 	public void onClick(View v) {
-		switch(v.getId()) {
-			case R.id.about_button:
-				Intent i = new Intent(this, About.class);
-				startActivity(i);
-				break;
+		switch (v.getId()) {
+		case R.id.about_button:
+			Intent i = new Intent(this, About.class);
+			startActivity(i);
+			break;
+		case R.id.new_button:
+			openNewGameDialog();
+			break;
 		}
 	}
 
@@ -45,11 +54,28 @@ public class Sudoku extends Activity implements OnClickListener {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()) {
-			case R.id.settings:
-				startActivity(new Intent(this, Prefs.class));
-				return true;
+		switch (item.getItemId()) {
+		case R.id.settings:
+			startActivity(new Intent(this, Prefs.class));
+			return true;
 		}
 		return false;
+	}
+
+	private void openNewGameDialog() {
+		new AlertDialog.Builder(this)
+				.setTitle(R.string.new_game_title)
+				.setItems(R.array.difficulty,
+						new DialogInterface.OnClickListener() {
+							public void onClick(
+									DialogInterface dialoginterface, int i) {
+								startGame(i);
+							}
+						}).show();
+	}
+
+	private void startGame(int i) {
+		Log.d(TAG, "clicked on " + i);
+		// Start game here...
 	}
 }
