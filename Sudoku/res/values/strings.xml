@@ -27,5 +27,18 @@ row, each column, and each of the 3x3 boxes
     <string name="easy_label">Easy</string>
     <string name="medium_label">Medium</string>
     <string name="hard_label">Hard</string>
+    <string name="game_title">Game</string>
+    <string name="no_moves_label">No moves</string>
+    <string name="keypad_title">Keypad</string>
+    <string name="num_0">0</string>
+    <string name="num_1">1</string>
+    <string name="num_2">2</string>
+    <string name="num_3">3</string>
+    <string name="num_4">4</string>
+    <string name="num_5">5</string>
+    <string name="num_6">6</string>
+    <string name="num_7">7</string>
+    <string name="num_8">8</string>
+    <string name="num_9">9</string>
 
 </resources>
