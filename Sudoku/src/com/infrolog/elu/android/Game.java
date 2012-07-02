@@ -99,16 +99,16 @@ public class Game extends Activity {
 		String puz;
 		// TODO: Continue last game
 		switch (diff) {
-			case DIFFICULTY_HARD:
-				puz = hardPuzzle;
-				break;
-			case DIFFICULTY_MEDIUM:
-				puz = mediumPuzzle;
-				break;
-			case DIFFICULTY_EASY:
-			default:
-				puz = easyPuzzle;
-				break;
+		case DIFFICULTY_HARD:
+			puz = hardPuzzle;
+			break;
+		case DIFFICULTY_MEDIUM:
+			puz = mediumPuzzle;
+			break;
+		case DIFFICULTY_EASY:
+		default:
+			puz = easyPuzzle;
+			break;
 		}
 		return fromPuzzleString(puz);
 	}
@@ -174,5 +174,17 @@ public class Game extends Activity {
 
 	private void setTile(int x, int y, int value) {
 		puzzle[y * 9 + x] = value;
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		Music.play(this, R.raw.game);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		Music.stop(this);
 	}
 }
