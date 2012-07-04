@@ -14,6 +14,8 @@ public class Game extends Activity {
 	public static final int DIFFICULTY_EASY = 0;
 	public static final int DIFFICULTY_MEDIUM = 1;
 	public static final int DIFFICULTY_HARD = 2;
+	private static final String PREF_PUZZLE = "puzzle";
+	protected static final int DIFFICULTY_CONTINUE = -1;
 
 	private final String easyPuzzle = "360000000004230800000004200"
 			+ "070460003820000014500013020" + "001900000007048300000000045";
@@ -38,6 +40,8 @@ public class Game extends Activity {
 		puzzleView = new PuzzleView(this);
 		setContentView(puzzleView);
 		puzzleView.requestFocus();
+		// If the activity is restarted, do a continue next time
+		getIntent().putExtra(KEY_DIFFICULTY, DIFFICULTY_CONTINUE);
 	}
 
 	private void calculateUsedTiles() {
@@ -97,19 +101,22 @@ public class Game extends Activity {
 
 	private int[] getPuzzle(int diff) {
 		String puz;
-		// TODO: Continue last game
 		switch (diff) {
-		case DIFFICULTY_HARD:
-			puz = hardPuzzle;
-			break;
-		case DIFFICULTY_MEDIUM:
-			puz = mediumPuzzle;
-			break;
-		case DIFFICULTY_EASY:
-		default:
-			puz = easyPuzzle;
-			break;
-		}
+			case DIFFICULTY_CONTINUE:
+				puz = getPreferences(MODE_PRIVATE).getString(PREF_PUZZLE,
+						easyPuzzle);
+				break;
+			case DIFFICULTY_HARD:
+				puz = hardPuzzle;
+				break;
+			case DIFFICULTY_MEDIUM:
+				puz = mediumPuzzle;
+				break;
+			case DIFFICULTY_EASY:
+			default:
+				puz = easyPuzzle;
+				break;
+			}
 		return fromPuzzleString(puz);
 	}
 
@@ -186,5 +193,8 @@ public class Game extends Activity {
 	protected void onPause() {
 		super.onPause();
 		Music.stop(this);
+		// Save the current puzzle
+		getPreferences(MODE_PRIVATE).edit()
+				.putString(PREF_PUZZLE, toPuzzleString(puzzle)).commit();
 	}
 }
